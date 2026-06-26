@@ -1,0 +1,284 @@
+/* ═══════════════════════════════════════════════════════════════
+   estilos.css — Factura estilo carta con soporte multi-página
+   ═══════════════════════════════════════════════════════════════ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Fondo gris para vista en pantalla ───────────────────────── */
+body {
+    background: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PÁGINA  —  cada .invoice representa una hoja carta
+   ══════════════════════════════════════════════════════════════ */
+.invoice {
+    width: 21.59cm;
+    min-height: 27.94cm;         /* mínimo una página; crece si el contenido es largo */
+    margin: 0 auto 30px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    position: relative;
+    page-break-after: always;    /* para impresión */
+}
+
+/* La última página NO fuerza salto */
+.invoice:last-child {
+    page-break-after: avoid;
+    margin-bottom: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ENCABEZADO  —  triángulos de color
+   ══════════════════════════════════════════════════════════════ */
+.invoice-header {
+    position: relative;
+    height: 130px;
+    flex-shrink: 0;
+}
+
+.hero-background {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, #3e8cdd 68%, #74cb3c 32%);
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 100%);
+    z-index: 1;
+}
+
+/* Logo + Piedras + slogan  —  siempre sobre zona coloreada */
+.invoice-content-header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-start;
+    padding: 20px 40px 0;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-section h2 {
+    font-size: 2.2rem;
+    color: white;
+    line-height: 1;
+}
+
+.slogan {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    color: white;
+    margin-top: 4px;
+    display: block;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DATOS DEL EMISOR  —  sobre fondo blanco, pegado al header
+   ══════════════════════════════════════════════════════════════ */
+.issuer-data {
+    background: #fff;
+    /* margen negativo para subir el bloque y solaparse con el
+       espacio vacío triangular del header */
+    margin-top: -10px;
+    padding: 6px 40px 10px;
+    border-bottom: 2px solid #3e8cdd;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 3;
+}
+
+.issuer-data-inner {
+    text-align: right;
+    font-size: 0.82rem;
+    color: #333;
+    line-height: 1.6;
+}
+
+.issuer-data-inner p { margin: 0; }
+
+/* ══════════════════════════════════════════════════════════════
+   CONTENIDO PRINCIPAL
+   ══════════════════════════════════════════════════════════════ */
+.main-content {
+    padding: 12px 40px 20px;
+    flex-grow: 1;
+}
+
+/* Datos del cliente + meta de factura */
+.data-client {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #3e8cdd;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+}
+
+.client-info { list-style: none; font-size: 0.9rem; }
+.client-info li { margin-bottom: 2px; }
+.invoice-meta { text-align: right; font-size: 0.9rem; }
+.invoice-meta p { margin-bottom: 2px; }
+
+/* ══════════════════════════════════════════════════════════════
+   TABLA DE PRODUCTOS
+   ══════════════════════════════════════════════════════════════ */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    background: #3e8cdd;
+    color: white;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 0.85rem;
+}
+
+.table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.83rem;
+}
+
+.table tbody tr:nth-child(even) td {
+    background: #f8faff;
+}
+
+/* Evita que una fila se parta entre páginas al imprimir */
+.table tbody tr {
+    page-break-inside: avoid;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TOTALES + SELLO FISCAL
+   ══════════════════════════════════════════════════════════════ */
+.totals-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.fiscal-stamps {
+    max-width: 55%;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.simulacion-aviso {
+    color: red;
+    font-weight: bold;
+    font-size: 0.7rem;
+    margin-top: 8px;
+}
+
+.total-box {
+    list-style: none;
+    text-align: right;
+    min-width: 200px;
+}
+
+.total-box li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+.grand-total {
+    font-size: 1.15rem;
+    color: #3e8cdd;
+    border-bottom: 2px solid #3e8cdd !important;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PIE DE PÁGINA
+   ══════════════════════════════════════════════════════════════ */
+.invoice-footer {
+    height: 110px;
+    position: relative;
+    flex-shrink: 0;
+    margin-top: auto;          /* empuja el footer al fondo de la página */
+}
+
+.footer-background {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 80%;
+    background: linear-gradient(to right, #3e8cdd 70%, #74cb3c 30%);
+    clip-path: polygon(0 60%, 100% 0, 100% 100%, 0 100%);
+}
+
+.signature {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    padding: 10px 40px 40px;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.line {
+    border: none;
+    border-top: 1px solid #aaa;
+    margin-bottom: 6px;
+}
+
+/* Encabezado de página adicional (página 2 en adelante) */
+.page-header-mini {
+    position: relative;
+    height: 60px;
+    flex-shrink: 0;
+}
+
+.page-header-mini .hero-background {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); /* barra sólida */
+}
+
+.page-header-mini .invoice-content-header {
+    padding: 12px 40px 0;
+}
+
+.page-header-mini .logo-section h2 { font-size: 1.4rem; }
+.page-header-mini .slogan { display: none; }
+
+.page-note {
+    padding: 6px 40px;
+    font-size: 0.75rem;
+    color: #888;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: right;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   IMPRESIÓN  @media print
+   ══════════════════════════════════════════════════════════════ */
+@media print {
+    body {
+        background: none;
+        padding: 0;
+    }
+
+    .invoice {
+        width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+        margin: 0;
+        page-break-after: always;
+    }
+
+    .invoice:last-child {
+        page-break-after: avoid;
+    }
+
+    .table tbody tr {
+        page-break-inside: avoid;
+    }
+}

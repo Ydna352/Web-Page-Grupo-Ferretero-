@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Contraseña – Portal Cliente</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --green: #74cb3c;
+      --green-dark: #5aaa2a;
+      --green-light: #eaf5dd;
+      --green-ring: rgba(116, 203, 60, .18);
+      --blue: #3a7fd5;
+      --red: #dc2626;
+      --red-bg: #fef2f2;
+      --red-border: #fecaca;
+      --gray-50: #f7f8fa;
+      --gray-100: #eef0f3;
+      --gray-200: #dde1e8;
+      --gray-400: #9099a8;
+      --gray-600: #505a6a;
+      --gray-800: #1e2533;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--gray-50);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(116, 203, 60, .08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(58, 127, 213, .06) 0%, transparent 60%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--gray-400);
+      font-size: .85rem;
+      font-weight: 500;
+      text-decoration: none;
+      margin-bottom: 24px;
+      padding: 5px 0;
+      transition: color .18s;
+    }
+
+    .back-link:hover {
+      color: var(--green-dark);
+    }
+
+    .back-link svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    /* ── Card ──────────────────────────────────────── */
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--gray-200);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .06), 0 1px 3px rgba(0, 0, 0, .04);
+      overflow: hidden;
+      animation: slideUp .45s cubic-bezier(.22, .68, 0, 1.1) both;
+    }
+
+    .card-top {
+      background: linear-gradient(160deg, var(--green-light) 0%, #f0f8e7 100%);
+      padding: 32px 32px 24px;
+      text-align: center;
+      border-bottom: 1px solid #daefc8;
+    }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .75rem;
+      font-weight: 600;
+    }
+
+    .step.done .step-dot {
+      background: var(--green-light);
+      color: var(--green-dark);
+      border: 1.5px solid var(--green);
+    }
+
+    .step.active .step-dot {
+      background: var(--green);
+      color: #fff;
+      box-shadow: 0 0 0 4px var(--green-ring);
+    }
+
+    .step-label {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+
+    .step.done .step-label {
+      color: var(--green-dark);
+    }
+
+    .step.active .step-label {
+      color: var(--green-dark);
+    }
+
+    .step-line {
+      width: 48px;
+      height: 1.5px;
+      background: var(--green);
+      margin: 0 4px;
+      margin-bottom: 24px;
+    }
+
+    /* Check icon for done step */
+    .step.done .step-dot::before {
+      content: '✓';
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--green);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(116, 203, 60, .3);
+    }
+
+    .avatar svg {
+      width: 26px;
+      height: 26px;
+      color: #fff;
+    }
+
+    .card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.45rem;
+      color: var(--gray-800);
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .card-desc {
+      font-size: .82rem;
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    /* User badge */
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 100px;
+      padding: 6px 14px 6px 6px;
+      margin-top: 14px;
+    }
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .75rem;
+      font-weight: 700;
+    }
+
+    .user-email {
+      font-size: .8rem;
+      color: var(--gray-600);
+      font-weight: 500;
+    }
+
+    /* ── Form body ─────────────────────────────────── */
+    .card-body {
+      padding: 28px 32px 32px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      margin-bottom: 7px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap svg.input-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: var(--gray-400);
+      pointer-events: none;
+    }
+
+    .field input {
+      width: 100%;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      padding: 10px 42px 10px 38px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .92rem;
+      color: var(--gray-800);
+      outline: none;
+      background: var(--gray-50);
+      transition: border-color .18s, box-shadow .18s, background .18s;
+    }
+
+    .field input::placeholder {
+      color: var(--gray-400);
+    }
+
+    .field input:focus {
+      border-color: var(--green);
+      background: #fff;
+      box-shadow: 0 0 0 3px var(--green-ring);
+    }
+
+    .field input:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    /* Toggle ver contraseña */
+    .toggle-pw {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gray-400);
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      transition: color .18s;
+    }
+
+    .toggle-pw:hover {
+      color: var(--gray-600);
+    }
+
+    .toggle-pw svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    /* ── Barra de fortaleza ────────────────────────── */
+    .strength-wrap {
+      margin-top: 8px;
+    }
+
+    .strength-bar {
+      height: 4px;
+      border-radius: 2px;
+      background: var(--gray-100);
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .strength-fill {
+      height: 100%;
+      border-radius: 2px;
+      width: 0%;
+      transition: width .35s ease, background .35s ease;
+    }
+
+    .strength-label {
+      font-size: .75rem;
+      color: var(--gray-400);
+      font-weight: 500;
+    }
+
+    /* ── Checklist de requisitos ───────────────────── */
+    .reqs {
+      margin: 14px 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 12px;
+    }
+
+    .req {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .78rem;
+      color: var(--gray-400);
+      transition: color .2s;
+    }
+
+    .req.ok {
+      color: var(--green-dark);
+    }
+
+    .req-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 1.5px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+
+    .req.ok .req-dot {
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .req.ok .req-dot::after {
+      content: '';
+      display: block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    /* ── Alerts ─────────────────────────────────────── */
+    .alert {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      font-size: .83rem;
+      margin-bottom: 18px;
+      animation: fadeIn .25s ease;
+    }
+
+    .alert.visible {
+      display: flex;
+    }
+
+    .alert-error {
+      color: var(--red);
+      background: var(--red-bg);
+      border: 1px solid var(--red-border);
+    }
+
+    .alert-success {
+      color: #166534;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+    }
+
+    .alert svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .alert-title {
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .alert-sub {
+      font-size: .78rem;
+      opacity: .85;
+    }
+
+    /* ── Botón ──────────────────────────────────────── */
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: var(--green);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 16px;
+      transition: opacity .18s, transform .15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn:hover:not(:disabled) {
+      opacity: .9;
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(.99);
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, .4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+
+    .btn.loading .spinner {
+      display: block;
+    }
+
+    .btn.loading .btn-text {
+      display: none;
+    }
+
+    .foot-link {
+      text-align: center;
+      font-size: .83rem;
+      color: var(--gray-400);
+    }
+
+    .foot-link a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .foot-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── Success overlay ─────────────────────────────── */
+    .success-overlay {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 48px 32px;
+      gap: 16px;
+    }
+
+    .success-overlay.visible {
+      display: flex;
+    }
+
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #f0fdf4;
+      border: 2px solid #86efac;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      animation: popIn .5s cubic-bezier(.22, .68, 0, 1.3) both;
+    }
+
+    .success-icon svg {
+      width: 36px;
+      height: 36px;
+      color: #16a34a;
+    }
+
+    .success-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--gray-800);
+    }
+
+    .success-desc {
+      font-size: .88rem;
+      color: var(--gray-600);
+      line-height: 1.6;
+      max-width: 280px;
+    }
+
+    .btn-login {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green);
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: .95rem;
+      margin-top: 8px;
+      transition: opacity .18s;
+    }
+
+    .btn-login:hover {
+      opacity: .88;
+    }
+
+    /* ── Keyframes ──────────────────────────────────── */
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(.5);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+
+    <a href="../Cliente/Register.php" class="back-link" id="backLink">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+      </svg>
+      Volver al paso anterior
+    </a>
+
+    <div class="card">
+      <!-- ══════════ FORMULARIO ══════════ -->
+      <div id="formView">
+        <div class="card-top">
+          <div class="steps">
+            <div class="step done">
+              <div class="step-dot"></div>
+              <span class="step-label">Verificar</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step active">
+              <div class="step-dot">2</div>
+              <span class="step-label">Contraseña</span>
+            </div>
+          </div>
+
+          <div class="avatar">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+          </div>
+          <div class="card-title">Crear contraseña</div>
+          <p class="card-desc">Elige una contraseña segura para acceder a tu cuenta</p>
+          <div class="user-badge" id="userBadge">
+            <div class="user-avatar" id="userInitials">?</div>
+            <span class="user-email" id="userEmail">cargando...</span>
+          </div>
+        </div>
+
+        <div class="card-body">
+
+          <!-- Nueva contraseña -->
+          <div class="field">
+            <label for="password">Nueva contraseña</label>
+            <div class="input-wrap">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.8" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+              </svg>
+              <input type="password" id="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password" />
+              <button type="button" class="toggle-pw" id="togglePw1" onclick="toggleVisibility('password','togglePw1')"
+                title="Ver contraseña">
+                <svg id="eyeIcon1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Barra de fortaleza -->
+            <div class="strength-wrap" id="strengthWrap" style="display:none;">
+              <div class="strength-bar">
+                <div class="strength-fill" id="strengthFill"></div>
+              </div>
+              <span class="strength-label" id="strengthLabel"></span>
+            </div>
+          </div>
+
+          <!-- Requisitos -->
+          <div class="reqs" id="reqs">
+            <div class="req" id="req-len">
+              <div class="req-dot"></div> 8+ caracteres
+            </div>
+            <div class="req" id="req-upper">
+              <div class="req-dot"></div> Una mayúscula
+            </div>
+            <div class="req" id="req-lower">
+              <div class="req-dot"></div> Una minúscula
+            </div>
+            <div class="req" id="req-num">
+              <div class="req-dot"></div> Un número
+            </div>
+            <div class="req" id="req-spec">
+              <div class="req-dot"></div> Un especial (!@#$%^&*)
+            </div>
+          </div>
+
+          <!-- Confirmar contraseña -->
+          <div class="field" style="margin-top:4px;">
+            <label for="confirmPassword">Confirmar contraseña</label>
+            <div class="input-wrap">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.8" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+              <input type="password" id="confirmPassword" placeholder="Repite tu contraseña"
+                autocomplete="new-password" />
+              <button type="button" class="toggle-pw" id="togglePw2"
+                onclick="toggleVisibility('confirmPassword','togglePw2')" title="Ver contraseña">
+                <svg id="eyeIcon2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Alertas -->
+          <div class="alert alert-error" id="errorBox" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            </svg>
+            <div>
+              <p class="alert-title" id="errorMsg"></p>
+            </div>
+          </div>
+
+          <!-- Botón -->
+          <button class="btn" id="btnSubmit" onclick="handleSubmit()">
+            <span class="spinner"></span>
+            <span class="btn-text">Completar registro</span>
+          </button>
+
+          <p class="foot-link">¿Ya tienes cuenta? <a href="Login.html?role=client">Inicia sesión</a></p>
+        </div>
+      </div><!-- /formView -->
+
+      <!-- ══════════ ÉXITO ══════════ -->
+      <div class="success-overlay" id="successView">
+        <div class="success-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="success-title">¡Registro exitoso!</div>
+        <p class="success-desc">Tu cuenta ha sido activada correctamente. Ya puedes iniciar sesión con tu correo y
+          contraseña.</p>
+        <a href="Login.html?role=client" class="btn-login">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+            style="width:16px;height:16px;">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+          </svg>
+          Ir al inicio de sesión
+        </a>
+      </div>
+    </div><!-- /card -->
+  </div>
+
+  <script>
+    /**
+     * Registro Paso 2 — Creación de contraseña segura
+     *
+     * Flujo:
+     *  1. Leer datos de sessionStorage (del paso 1)
+     *  2. Validar contraseña en frontend (mismo criterio que backend)
+     *  3. POST a api_registro_password.php con acción "crear_password"
+     *  4. En éxito → mostrar overlay, limpiar session
+     *  5. En error → mostrar mensaje descriptivo
+     *
+     * Seguridad backend (api_registro_password.php):
+     *  - Verifica que el correo exista en BD
+     *  - Verifica que no tenga contraseña ya
+     *  - Hashea con password_hash() / bcrypt
+     *  - Solo hace UPDATE, nunca INSERT
+     */
+
+    let loading = false;
+
+    /* ── Leer datos del paso 1 ───────────────────────────────────────────── */
+    const raw = sessionStorage.getItem('registrationData');
+    const user = raw ? JSON.parse(raw) : null;
+
+    if (!user || !user.email) {
+      // Sin datos → volver al paso 1
+      location.href = 'Register.php';
+    } else {
+      // Mostrar email e iniciales en el badge
+      document.getElementById('userEmail').textContent = user.email;
+      const initials = (user.fullName || user.email)
+        .split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+      document.getElementById('userInitials').textContent = initials;
+    }
+
+    /* ── Helpers ─────────────────────────────────────────────────────────── */
+    const btn = document.getElementById('btnSubmit');
+    const pwInput = document.getElementById('password');
+    const cfInput = document.getElementById('confirmPassword');
+    const errorBox = document.getElementById('errorBox');
+    const errorMsg = document.getElementById('errorMsg');
+
+    function setLoading(on) {
+      loading = on;
+      btn.disabled = on;
+      btn.classList.toggle('loading', on);
+      pwInput.disabled = cfInput.disabled = on;
+    }
+
+    function showError(msg) {
+      errorMsg.textContent = msg;
+      errorBox.classList.add('visible');
+    }
+
+    function hideError() { errorBox.classList.remove('visible'); }
+
+    /* ── Toggle visibilidad contraseña ───────────────────────────────────── */
+    function toggleVisibility(inputId, btnId) {
+      const input = document.getElementById(inputId);
+      const isText = input.type === 'text';
+      input.type = isText ? 'password' : 'text';
+      // Cambiar ícono
+      const icon = document.getElementById(btnId).querySelector('svg');
+      icon.innerHTML = isText
+        ? '<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>'
+        : '<path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/>';
+    }
+
+    /* ── Evaluador de fortaleza ──────────────────────────────────────────── */
+    const RULES = {
+      len: pw => pw.length >= 8,
+      upper: pw => /[A-Z]/.test(pw),
+      lower: pw => /[a-z]/.test(pw),
+      num: pw => /[0-9]/.test(pw),
+      spec: pw => /[!@#$%^&*]/.test(pw),
+    };
+
+    const STRENGTH = [
+      { label: 'Muy débil', color: '#ef4444' },
+      { label: 'Débil', color: '#f97316' },
+      { label: 'Regular', color: '#eab308' },
+      { label: 'Fuerte', color: '#22c55e' },
+      { label: 'Muy fuerte', color: '#16a34a' },
+    ];
+
+    pwInput.addEventListener('input', () => {
+      hideError();
+      const pw = pwInput.value;
+      const passed = Object.values(RULES).filter(fn => fn(pw)).length;
+
+      // Actualizar dots
+      Object.entries(RULES).forEach(([key, fn]) => {
+        document.getElementById('req-' + key).classList.toggle('ok', fn(pw));
+      });
+
+      // Barra
+      const wrap = document.getElementById('strengthWrap');
+      const fill = document.getElementById('strengthFill');
+      const lbl = document.getElementById('strengthLabel');
+
+      if (pw.length === 0) { wrap.style.display = 'none'; return; }
+      wrap.style.display = 'block';
+
+      const idx = Math.max(0, passed - 1);
+      fill.style.width = (passed / 5 * 100) + '%';
+      fill.style.background = STRENGTH[idx].color;
+      lbl.textContent = STRENGTH[idx].label;
+      lbl.style.color = STRENGTH[idx].color;
+    });
+
+    cfInput.addEventListener('input', hideError);
+
+    /* ── Validación frontend ─────────────────────────────────────────────── */
+    function validateForm() {
+      const pw = pwInput.value;
+      const cf = cfInput.value;
+
+      if (!pw) { showError('Por favor ingresa una contraseña.'); pwInput.focus(); return false; }
+      if (pw.length < 8) { showError('La contraseña debe tener al menos 8 caracteres.'); return false; }
+      if (!/[A-Z]/.test(pw)) { showError('La contraseña debe incluir al menos una mayúscula.'); return false; }
+      if (!/[a-z]/.test(pw)) { showError('La contraseña debe incluir al menos una minúscula.'); return false; }
+      if (!/[0-9]/.test(pw)) { showError('La contraseña debe incluir al menos un número.'); return false; }
+      if (!/[!@#$%^&*]/.test(pw)) { showError('La contraseña debe incluir al menos un carácter especial (!@#$%^&*).'); return false; }
+      if (pw !== cf) { showError('Las contraseñas no coinciden.'); cfInput.focus(); return false; }
+      return true;
+    }
+
+    /* ── Submit ──────────────────────────────────────────────────────────── */
+    function handleSubmit() {
+      if (loading) return;
+      hideError();
+      if (!validateForm()) return;
+
+      setLoading(true);
+
+      fetch('../PHP/api_registro_password.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          accion: 'crear_password',
+          correo: user.email,
+          password: pwInput.value
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            // ✅ Contraseña guardada — limpiar session y mostrar éxito
+            sessionStorage.removeItem('registrationData');
+            document.getElementById('formView').style.display = 'none';
+            document.getElementById('backLink').style.display = 'none';
+            document.getElementById('successView').classList.add('visible');
+          } else {
+            showError(data.message || 'No se pudo completar el registro.');
+            setLoading(false);
+          }
+        })
+        .catch(() => {
+          showError('Error de conexión. Verifica que el servidor esté activo.');
+          setLoading(false);
+        });
+    }
+
+    // Enter en cualquier campo → enviar
+    [pwInput, cfInput].forEach(el => {
+      el.addEventListener('keydown', e => { if (e.key === 'Enter') handleSubmit(); });
+    });
+  </script>
+</body>
+
+</html>

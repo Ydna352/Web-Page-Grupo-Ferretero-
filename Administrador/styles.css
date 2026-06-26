@@ -1,0 +1,435 @@
+/* ============================================================
+   styles.css — Estilos del Panel de Administración
+   ============================================================
+
+   ¿Qué es CSS?
+   CSS (Cascading Style Sheets) es el lenguaje que le dice al
+   navegador "cómo se debe ver" cada elemento HTML: colores,
+   tamaños, espacios, sombras, etc.
+
+   Aquí usamos "variables CSS" (--nombre-variable) para guardar
+   colores y valores que se repiten, igual que el theme.css
+   original del proyecto React. Esto hace el código fácil de
+   cambiar: si quieres cambiar un color, solo lo cambias UNA vez
+   en la sección :root.
+   ============================================================ */
+
+
+/* ============================================================
+   1. VARIABLES GLOBALES (equivalente a theme.css)
+   :root = aplica a TODA la página
+   ============================================================ */
+:root {
+  --color-fondo: #ffffff;
+  /* Color del fondo principal */
+  --color-texto: #1a1a1a;
+  /* Color del texto normal */
+  --color-card: #ffffff;
+  /* Fondo de las tarjetas */
+  --color-borde: rgba(0, 0, 0, 0.1);
+  /* Borde sutil de tarjetas */
+  --color-muted: #717182;
+  /* Texto gris apagado */
+  --color-muted-fondo: #ececf0;
+  /* Fondo gris claro */
+  --color-azul: #3e8cdd;
+  /* Azul principal del proyecto */
+  --color-verde: #74cb3c;
+  /* Verde secundario del proyecto */
+  --radio-borde: 0.625rem;
+  /* Curvatura de las esquinas */
+  --fuente-principal: 'Segoe UI', Arial, sans-serif;
+}
+
+
+/* ============================================================
+   2. RESET BÁSICO Y ESTILOS DEL BODY
+   Elimina márgenes por defecto y establece la fuente y fondo.
+   ============================================================ */
+* {
+  /* El asterisco (*) aplica a TODOS los elementos */
+  box-sizing: border-box;
+  /* El borde y padding NO agrandan el elemento */
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--fuente-principal);
+  /* Usa la variable de fuente */
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-size: 16px;
+  min-height: 100vh;
+  /* La página ocupa al menos toda la pantalla */
+}
+
+
+/* ============================================================
+   3. LAYOUT PRINCIPAL (equivalente a AdminLayout en React)
+   La página tiene 2 zonas:
+     - Sidebar (barra lateral izquierda)
+     - Contenido principal (derecha)
+
+   Usamos "flexbox" para ponerlos uno al lado del otro.
+   ============================================================ */
+.layout {
+  display: flex;
+  /* Acomoda hijos en fila (horizontal) */
+  min-height: 100vh;
+}
+
+
+/* ============================================================
+   4. SIDEBAR (Barra lateral)
+   ============================================================ */
+.sidebar {
+  width: 240px;
+  /* Ancho fijo de la barra lateral */
+  background-color: #f8f9fc;
+  border-right: 1px solid var(--color-borde);
+  display: flex;
+  flex-direction: column;
+  /* Apila los elementos verticalmente */
+  padding: 24px 0;
+
+  /*
+     position: fixed → El sidebar SIEMPRE es visible al hacer scroll.
+     Equivale a "sticky sidebar" en diseños modernos.
+     height: 100vh   → Ocupa toda la altura de la pantalla.
+     top: 0; left: 0 → Pegado arriba-izquierda.
+     z-index: 100    → Por encima del contenido normal.
+  */
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  /* Scroll si el menú es muy largo */
+  z-index: 100;
+}
+
+/* Logo o título dentro del sidebar */
+.sidebar-logo {
+  padding: 0 20px 24px 20px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-azul);
+  border-bottom: 1px solid var(--color-borde);
+  margin-bottom: 16px;
+}
+
+/* Cada enlace del menú lateral */
+.sidebar-nav a {
+  display: block;
+  /* Ocupa toda la línea (no solo el texto) */
+  padding: 10px 20px;
+  color: var(--color-texto);
+  text-decoration: none;
+  /* Quita el subrayado de los enlaces */
+  font-size: 0.9rem;
+  border-radius: 0 var(--radio-borde) var(--radio-borde) 0;
+  transition: background-color 0.2s;
+  /* Animación suave al pasar el mouse */
+}
+
+/* Cuando el mouse pasa sobre un enlace del menú */
+.sidebar-nav a:hover {
+  background-color: var(--color-muted-fondo);
+  color: var(--color-azul);
+}
+
+/* Enlace activo (página actual) */
+.sidebar-nav a.activo {
+  background-color: #e8f1fb;
+  color: var(--color-azul);
+  font-weight: 600;
+  border-left: 3px solid var(--color-azul);
+}
+
+
+/* ============================================================
+   5. ZONA DE CONTENIDO PRINCIPAL
+   ============================================================ */
+.contenido-principal {
+  flex: 1;
+  /* Ocupa todo el espacio restante */
+  display: flex;
+  flex-direction: column;
+  /*
+     margin-left = ancho del sidebar.
+     Necesario porque el sidebar es "fixed" y sale del flujo normal.
+     Sin esto, el contenido quedaría debajo del sidebar.
+  */
+  margin-left: 240px;
+}
+
+/* Barra superior (header) */
+.header {
+  height: 60px;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--color-borde);
+  display: flex;
+  align-items: center;
+  /* Centra verticalmente */
+  padding: 0 24px;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  justify-content: space-between;
+}
+
+.header-usuario {
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+/* Área donde va el contenido de cada "página" */
+.area-pagina {
+  padding: 32px;
+  flex: 1;
+}
+
+
+/* ============================================================
+   6. ENCABEZADO DE LA PÁGINA DEL DASHBOARD
+   ============================================================ */
+.dashboard-titulo {
+  font-size: 2rem;
+  /* Texto grande */
+  font-weight: 700;
+  /* Negrita */
+  color: var(--color-azul);
+  margin-bottom: 8px;
+}
+
+.dashboard-subtitulo {
+  color: var(--color-muted);
+  font-size: 1rem;
+  margin-bottom: 32px;
+}
+
+
+/* ============================================================
+   7. GRILLA DE CARDS (tarjetas de módulos)
+   "grid" divide el espacio en columnas automáticamente.
+   "repeat(3, 1fr)" = 3 columnas iguales.
+   En pantallas pequeñas (menos de 768px) baja a 1 columna.
+   ============================================================ */
+.grilla-modulos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 3 columnas de igual tamaño */
+  gap: 24px;
+  /* Espacio entre tarjetas */
+}
+
+/* En pantallas medianas: 2 columnas */
+@media (max-width: 900px) {
+  .grilla-modulos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sidebar {
+    width: 180px;
+  }
+}
+
+/* En pantallas pequeñas (celulares): 1 columna */
+@media (max-width: 600px) {
+  .grilla-modulos {
+    grid-template-columns: 1fr;
+  }
+
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--color-borde);
+  }
+}
+
+
+/* ============================================================
+   8. TARJETA DE MÓDULO (equivalente al componente <Card>)
+   ============================================================ */
+
+/* El enlace que envuelve cada tarjeta */
+.enlace-card {
+  text-decoration: none;
+  /* Sin subrayado */
+  color: inherit;
+  /* Hereda el color del padre */
+  display: block;
+  /* Ocupa todo el ancho disponible */
+  height: 100%;
+}
+
+/* La tarjeta en sí */
+.card {
+  background-color: var(--color-card);
+  border-radius: var(--radio-borde);
+  border: 2px solid transparent;
+  /* El color del borde se pone desde JS */
+  height: 100%;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+  /* Transición suave para hover (cuando el ratón pasa encima) */
+  transition: box-shadow 0.25s ease,
+    transform 0.25s ease;
+
+  cursor: pointer;
+  /* El cursor cambia a "mano" al pasar encima */
+}
+
+/* Efecto al pasar el ratón sobre la tarjeta */
+.card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  /* Sombra más grande */
+  transform: scale(1.04);
+  /* Se agranda un 4% */
+}
+
+/* Ícono de la tarjeta */
+.card-icono {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  /* Esquinas redondeadas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.card-icono svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: #ffffff;
+  /* SVG blanco sobre fondo de color */
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Título de la tarjeta */
+.card-titulo {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  /* El color se asigna dinámicamente desde JavaScript */
+}
+
+/* Descripción de la tarjeta */
+.card-descripcion {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+  margin-bottom: 16px;
+}
+
+/* Texto de llamada a la acción */
+.card-cta {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin-top: 8px;
+}
+
+
+/* ============================================================
+   9. SIDEBAR FOOTER — Botón Cerrar Sesión
+   ============================================================
+   Siempre al fondo del sidebar gracias a margin-top: auto.
+   "margin-top: auto" empuja el elemento al final del flex container.
+   ============================================================ */
+.sidebar-footer {
+  margin-top: auto;
+  /* Empuja al fondo del sidebar */
+  padding: 16px 12px;
+  border-top: 1px solid var(--color-borde);
+}
+
+/* Botón de cerrar sesión */
+.btn-cerrar-sesion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  border: 1px solid #e53e3e;
+  color: #e53e3e;
+  border-radius: var(--radio-borde);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-cerrar-sesion:hover {
+  background-color: #fff5f5;
+}
+
+/* Ícono SVG dentro del botón */
+.icono-sesion {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  flex-shrink: 0;
+}
+
+/* Responsive: ajuste del margin-left en pantallas pequeñas */
+@media (max-width: 600px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+
+  .contenido-principal {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 900px) and (min-width: 601px) {
+  .sidebar {
+    width: 180px;
+  }
+
+  .contenido-principal {
+    margin-left: 180px;
+  }
+
+  #cl-sidebar a.cl-logout svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    /* 👈 alinea verticalmente */
+    gap: 8px;
+    /* espacio entre ícono y texto */
+  }
+
+  .sidebar-nav a svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    /* evita que se deforme */
+  }
+}

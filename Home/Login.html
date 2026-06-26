@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión – Grupo Ferretero Piedras</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="../Administrador/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../Administrador/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../Administrador/favicon-16x16.png">
+  <link rel="manifest" href="../Administrador/site.webmanifest">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --blue: #3e8cdd;
+      --green: #74cb3c;
+      --red: #dc2626;
+      --bg: #f3f4f6;
+      --white: #ffffff;
+      --gray: #6b7280;
+      --gray-light: #f9fafb;
+      --accent: var(--blue);
+      /* se sobreescribe por JS */
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background-color: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 440px;
+      padding: 0 16px;
+    }
+
+    /* Back link */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      color: var(--blue);
+      font-family: 'Barlow', sans-serif;
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 6px 4px;
+      margin-bottom: 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background .15s;
+    }
+
+    .back-btn:hover {
+      background: rgba(62, 140, 221, .08);
+    }
+
+    .back-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Card */
+    .card {
+      background: var(--white);
+      border-radius: 16px;
+      border: 2px solid var(--accent);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, .09);
+      overflow: hidden;
+      animation: fadeUp .4s ease both;
+    }
+
+    /* Card header */
+    .card-header {
+      text-align: center;
+      padding: 32px 32px 20px;
+    }
+
+    .avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .avatar svg {
+      width: 32px;
+      height: 32px;
+      color: var(--white);
+    }
+
+    .card-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .card-desc {
+      font-size: .9rem;
+      color: var(--gray);
+    }
+
+    /* Card content */
+    .card-content {
+      padding: 0 32px 32px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field label {
+      display: block;
+      font-size: .88rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+
+    .field input {
+      width: 100%;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: 9px 13px;
+      font-family: 'Barlow', sans-serif;
+      font-size: .95rem;
+      outline: none;
+      transition: border-color .18s, box-shadow .18s;
+      background: var(--white);
+    }
+
+    .field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(62, 140, 221, .15);
+    }
+
+    .field input::placeholder {
+      color: #9ca3af;
+    }
+
+    /* Error */
+    .error-msg {
+      display: none;
+      font-size: .875rem;
+      color: var(--red);
+      background: #fef2f2;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+    }
+
+    .error-msg.visible {
+      display: block;
+    }
+
+    /* Submit */
+    .btn-submit {
+      width: 100%;
+      padding: 11px;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--accent);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .18s, transform .18s;
+      margin-bottom: 14px;
+    }
+
+    .btn-submit:hover {
+      opacity: .88;
+      transform: translateY(-1px);
+    }
+
+    /* Register link (client only) */
+    .register-link {
+      text-align: center;
+      font-size: .875rem;
+      color: var(--gray);
+      margin-bottom: 14px;
+    }
+
+    .register-link a {
+      color: var(--green);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Test credentials hint */
+    .hint {
+      font-size: .82rem;
+      color: var(--gray);
+      background: var(--gray-light);
+      border-radius: 8px;
+      padding: 12px 14px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .hint strong {
+      display: block;
+      margin-bottom: 2px;
+      color: #374151;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card-header {
+        padding: 24px 20px 16px;
+      }
+
+      .card-content {
+        padding: 0 20px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="wrapper">
+
+    <!-- Back button -->
+    <a href="Home.html" class="back-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+      </svg>
+      Volver al inicio
+    </a>
+
+    <!-- Card -->
+    <div class="card" id="card">
+
+      <div class="card-header">
+        <div class="avatar" id="avatar">
+          <!-- icon swapped by JS -->
+          <svg id="avatar-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+          </svg>
+        </div>
+        <div class="card-title" id="card-title">Acceso</div>
+        <div class="card-desc">Ingresa tus credenciales para continuar</div>
+      </div>
+
+      <div class="card-content">
+
+        <div class="field">
+          <label for="email">Correo Electrónico</label>
+          <input type="email" id="email" placeholder="correo@ejemplo.com" required />
+        </div>
+
+        <div class="field">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" placeholder="••••••••" required />
+        </div>
+
+        <div class="error-msg" id="error-msg">Credenciales incorrectas</div>
+
+        <button class="btn-submit" id="btn-submit" onclick="handleLogin()">Iniciar Sesión</button>
+
+        <!-- Register link (shown only for client role) -->
+        <div class="register-link" id="register-link" style="display:none">
+          ¿Ya tienes una cuenta?
+          <a href="UnifiedLogin.php">Inicia Sesión</a>
+        </div>
+
+        <div class="hint" id="hint">
+          <strong>Credenciales de prueba:</strong>
+          <span id="hint-email"></span>
+          <span id="hint-pass"></span>
+        </div>
+
+      </div>
+    </div><!-- /card -->
+  </div><!-- /wrapper -->
+
+  <script>
+    // ── Detect role from URL query param: ?role=admin | ?role=client ────────────
+    // Example usage: Login.html?role=admin   /   Login.html?role=client
+    const params = new URLSearchParams(window.location.search);
+    const role = params.get('role') || 'client';   // default: client
+    const isAdmin = role === 'admin';
+
+    const BLUE = '#3e8cdd';
+    const GREEN = '#74cb3c';
+    const accent = isAdmin ? BLUE : GREEN;
+
+    // Apply accent color via CSS variable
+    document.documentElement.style.setProperty('--accent', accent);
+
+    // Card title
+    document.getElementById('card-title').textContent =
+      isAdmin ? 'Acceso Administrador' : 'Acceso Cliente';
+
+    // Avatar icon: swap to UserCog for admin
+    if (isAdmin) {
+      document.getElementById('avatar-icon').innerHTML = `
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />`;
+    }
+
+    // Placeholder & hint
+    document.getElementById('email').placeholder =
+      isAdmin ? 'admin@empresa.com' : 'cliente@email.com';
+    document.getElementById('hint-email').textContent =
+      'Ingresa tu correo registrado en el sistema';
+    document.getElementById('hint-pass').textContent =
+      'y tu contraseña para continuar';
+
+    // Show register link for clients
+    if (!isAdmin) {
+      document.getElementById('register-link').style.display = 'block';
+      // Apuntar al flujo de registro real contra BD
+      document.querySelector('#register-link a').href = '../Cliente/Register.php';
+    }
+
+    // ── Login handler — usa backend PHP real (no credenciales hardcoded) ─────────
+
+    function handleLogin() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errorEl  = document.getElementById('error-msg');
+
+      errorEl.classList.remove('visible');
+
+      if (!email || !password) {
+        errorEl.textContent = 'Ingresa tu correo y contraseña.';
+        errorEl.classList.add('visible');
+        return;
+      }
+
+      const btn = document.getElementById('btn-submit');
+      btn.disabled = true;
+      btn.textContent = 'Iniciando sesión...';
+
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('password', password);
+
+      fetch('../PHP/login.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok && data.redirect) {
+          window.location.href = data.redirect;
+        } else {
+          errorEl.textContent = data.error || 'Credenciales incorrectas. Verifica tu correo y contraseña.';
+          errorEl.classList.add('visible');
+          btn.disabled = false;
+          btn.textContent = 'Iniciar Sesión';
+        }
+      })
+      .catch(() => {
+        errorEl.textContent = 'Error de conexión. Verifica que el servidor esté activo.';
+        errorEl.classList.add('visible');
+        btn.disabled = false;
+        btn.textContent = 'Iniciar Sesión';
+      });
+    }
+
+    // Allow Enter key to submit
+    ['email', 'password'].forEach(id => {
+      document.getElementById(id).addEventListener('keydown', e => {
+        if (e.key === 'Enter') handleLogin();
+      });
+    });
+  </script>
+
+</body>
+
+</html>

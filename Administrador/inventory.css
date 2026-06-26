@@ -1,0 +1,566 @@
+/* ============================================================
+   inventory.css — Estilos propios de la página de Inventario
+   ============================================================
+
+   Este archivo COMPLEMENTA a styles.css (que tiene el layout,
+   sidebar, header, etc.). Aquí solo están los estilos nuevos
+   que necesita esta página específica:
+
+   1. Encabezado de página con botón
+   2. Tarjetas de estadísticas
+   3. Tabla de materiales
+   4. Botones de acción (editar / eliminar)
+   5. Modal (ventana emergente)
+   6. Formulario del modal
+   7. Badges de área (etiquetas de color)
+   8. Notificaciones flotantes
+   ============================================================ */
+
+
+/* ============================================================
+   1. ENCABEZADO DE LA PÁGINA
+   El div que contiene: [Título + subtítulo] [Botón Agregar]
+   display: flex + justify-content: space-between = los pone
+   en los extremos opuestos de la misma fila.
+   ============================================================ */
+.pagina-titulo {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-azul);
+    margin-bottom: 4px;
+}
+
+.pagina-subtitulo {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+.pagina-header {
+    display: flex;
+    align-items: center;           /* Centra verticalmente */
+    justify-content: space-between; /* Título izq, botón der */
+    margin-bottom: 28px;
+    flex-wrap: wrap;               /* En celulares baja el botón */
+    gap: 16px;
+}
+
+
+/* ============================================================
+   2. ESTILOS BASE DE BOTONES
+   Equivale al componente <Button> de React.
+   ============================================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: var(--radio-borde);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: opacity 0.2s, transform 0.1s;
+    text-decoration: none;
+}
+
+.btn:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Botón principal verde: "Agregar Material" */
+.btn-agregar-principal {
+    background-color: var(--color-verde);
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+/* Botón de guardar en el modal (azul) */
+.btn-guardar {
+    background-color: var(--color-azul);
+    color: #ffffff;
+}
+
+/* Botón de cancelar en el modal (outline) */
+.btn-cancelar {
+    background-color: transparent;
+    color: var(--color-texto);
+    border-color: var(--color-borde);
+}
+
+.btn-cancelar:hover {
+    background-color: var(--color-muted-fondo);
+}
+
+/* Ícono SVG dentro del botón "Agregar Material" */
+.icono-btn {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    fill: none;
+}
+
+
+/* ============================================================
+   3. TARJETAS DE ESTADÍSTICAS
+   Equivale a la sección de Cards de React con 3 columnas.
+   ============================================================ */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+@media (max-width: 700px) {
+    .stats-grid {
+        grid-template-columns: 1fr; /* 1 columna en móvil */
+    }
+}
+
+/* Tarjeta base */
+.stat-card {
+    background-color: var(--color-card);
+    border-radius: var(--radio-borde);
+    padding: 20px 24px;
+    border: 2px solid transparent;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+}
+
+/* Variante azul */
+.stat-azul  { border-color: var(--color-azul); }
+/* Variante verde */
+.stat-verde { border-color: var(--color-verde); }
+
+/* Etiqueta pequeña de la estadística */
+.stat-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+/* Número grande de la estadística */
+.stat-valor {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.stat-valor-azul  { color: var(--color-azul); }
+.stat-valor-verde { color: var(--color-verde); }
+
+
+/* ============================================================
+   4. TARJETA CONTENEDORA DE LA TABLA
+   Equivale al <Card> que envuelve la <Table> en React.
+   ============================================================ */
+.tabla-card {
+    background-color: var(--color-card);
+    border-radius: var(--radio-borde);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+    overflow: hidden; /* Las esquinas redondeadas se aplican bien */
+}
+
+.tabla-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--color-borde);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-azul);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Ícono SVG en el header de la tabla */
+.icono-titulo {
+    width: 22px;
+    height: 22px;
+    stroke: var(--color-azul);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    flex-shrink: 0;
+}
+
+/* Scroll horizontal cuando la tabla es muy ancha (en celulares) */
+.tabla-contenedor {
+    overflow-x: auto;
+    padding: 0 0 8px 0;
+}
+
+
+/* ============================================================
+   5. TABLA HTML
+   Equivale a los componentes <Table>, <TableRow>, etc. de React.
+   ============================================================ */
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    table-layout: fixed; /* Respeta los anchos del colgroup */
+}
+
+/* Encabezados de columna */
+.tabla thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background-color: #f8f9fc;
+    border-bottom: 1px solid var(--color-borde);
+    white-space: nowrap;
+}
+
+/* Celdas de datos */
+.tabla tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-borde);
+    vertical-align: middle;
+}
+
+/* Fila al pasar el ratón */
+.fila-tabla:hover {
+    background-color: #f5f8ff;
+}
+
+/* Última fila sin borde inferior */
+.fila-tabla:last-child td {
+    border-bottom: none;
+}
+
+/* Estilos específicos de celdas */
+.celda-id          { font-weight: 700; color: var(--color-muted); font-size: 0.8rem; white-space: nowrap; }
+.celda-nombre      { font-weight: 600; word-break: break-word; }
+.celda-numero      { font-weight: 700; text-align: right; white-space: nowrap; }
+.celda-precio      { color: var(--color-verde); font-weight: 600; white-space: nowrap; }
+.celda-descripcion {
+    color: var(--color-muted);
+    font-size: 0.82rem;
+    /* Keep the td as a normal table-cell; truncation is handled by the inner wrapper */
+    vertical-align: top;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+/* Inner wrapper that actually truncates text */
+.desc-wrap {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+    white-space: normal;
+    line-height: 1.45;
+    transition: max-height 0.25s ease;
+}
+
+/* When expanded, remove clamp so full text shows */
+.desc-wrap.desc-expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    overflow: visible;
+}
+
+/* Chevron toggle button — small, inline, non-intrusive */
+.desc-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid var(--color-borde);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 2px 4px;
+    margin-top: 4px;
+    color: var(--color-azul);
+    font-size: 0.72rem;
+    line-height: 1;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.desc-toggle:hover {
+    background-color: #e8f1fb;
+}
+
+/* Rotate the chevron icon when expanded */
+.desc-toggle.desc-toggle-open svg {
+    transform: rotate(180deg);
+}
+
+.desc-toggle svg {
+    width: 12px;
+    height: 12px;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    transition: transform 0.2s ease;
+}
+.celda-acciones    {
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+
+/* ============================================================
+   6. BOTONES DE ACCIÓN (Editar / Eliminar) en la tabla
+   Equivale a los botones con <Edit> y <Trash2> de React.
+   ============================================================ */
+.btn-accion {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 2px solid;
+    background: transparent;
+    cursor: pointer;
+    margin-right: 6px;
+    transition: background-color 0.2s;
+}
+
+.btn-accion svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+/* Botón editar (azul) */
+.btn-editar {
+    border-color: var(--color-azul);
+    color: var(--color-azul);
+}
+.btn-editar svg { stroke: var(--color-azul); }
+.btn-editar:hover { background-color: #e8f1fb; }
+
+/* Botón eliminar (rojo) */
+.btn-eliminar {
+    border-color: #e53e3e;
+    color: #e53e3e;
+}
+.btn-eliminar svg { stroke: #e53e3e; }
+.btn-eliminar:hover { background-color: #fff5f5; }
+
+
+/* ============================================================
+   7. BADGES DE ÁREA (etiquetas de colores por departamento)
+   Equivale al componente <Badge> de React.
+   ============================================================ */
+.badge-area {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;    /* Pill shape (pastilla) */
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Un color diferente por área */
+.badge-carpinteria  { background: #fff8e1; color: #b7791f; }
+.badge-plomeria     { background: #e8f4fd; color: #2b6cb0; }
+.badge-electricidad { background: #fef3c7; color: #d97706; }
+.badge-pintura      { background: #fce7f3; color: #b83280; }
+
+/* Fallback para cualquier área no definida */
+.badge-area:not([class*="badge-"]) { background: var(--color-muted-fondo); color: var(--color-muted); }
+
+
+/* ============================================================
+   8. MODAL (ventana emergente)
+   Equivale al componente <Dialog> de React.
+
+   position: fixed    → Flota sobre toda la página
+   inset: 0           → Ocupa toda la pantalla (top/right/bottom/left = 0)
+   background rgba    → Fondo semitransparente oscuro
+   display: flex      → Centra el contenido
+   ============================================================ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;                              /* Cubre toda la pantalla */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+    display: flex;
+    align-items: center;     /* Centrado vertical */
+    justify-content: center; /* Centrado horizontal */
+    z-index: 1000;           /* Por encima de todo el contenido */
+    padding: 16px;           /* Margen en celulares */
+}
+
+/* La caja blanca del modal */
+.modal-contenido {
+    background-color: #ffffff;
+    border-radius: var(--radio-borde);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 640px;     /* Ancho máximo igual al max-w-2xl de React */
+    max-height: 90vh;     /* No más alto que el 90% de la pantalla */
+    overflow-y: auto;     /* Scroll si el contenido es muy largo */
+    padding: 28px;
+}
+
+/* Encabezado del modal: título + botón cerrar */
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.modal-titulo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-azul);
+    margin: 0;
+}
+
+/* Botón × para cerrar el modal */
+.btn-cerrar-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-muted);
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+.btn-cerrar-modal:hover {
+    background-color: var(--color-muted-fondo);
+    color: var(--color-texto);
+}
+
+
+/* ============================================================
+   9. FORMULARIO DEL MODAL
+   Equivale a los <Label> e <Input> de React.
+   ============================================================ */
+
+/* Grilla de 2 columnas para los campos (igual a md:grid-cols-2 de React) */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 500px) {
+    .form-grid {
+        grid-template-columns: 1fr; /* 1 columna en celulares */
+    }
+}
+
+/* Un grupo de campo: label + input */
+.form-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Campo que ocupa las 2 columnas (para Descripción) */
+.form-grupo-completo {
+    grid-column: span 2; /* Ocupa ambas columnas */
+}
+
+@media (max-width: 500px) {
+    .form-grupo-completo {
+        grid-column: span 1;
+    }
+}
+
+/* Etiqueta del campo */
+.form-grupo label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-texto);
+}
+
+/* Campo de entrada de texto/número */
+.form-grupo input {
+    padding: 9px 12px;
+    border: 1px solid var(--color-borde);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: var(--color-texto);
+    background-color: #f9f9fb;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    width: 100%;
+}
+
+/* Cuando el campo está enfocado (activo) */
+.form-grupo input:focus {
+    border-color: var(--color-azul);
+    box-shadow: 0 0 0 3px rgba(62, 140, 221, 0.15);
+    background-color: #ffffff;
+}
+
+/* Botones al final del formulario */
+.form-botones {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end; /* Pegados a la derecha */
+}
+
+
+/* ============================================================
+   10. NOTIFICACIÓN FLOTANTE (equivalente al toast de sonner)
+   ============================================================ */
+.notificacion {
+    position: fixed;     /* Flota sobre todo */
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: var(--radio-borde);
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 2000;       /* Por encima del modal */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    animation: slideDown 0.3s ease; /* Animación de entrada */
+}
+
+/* Animación: baja desde arriba */
+@keyframes slideDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to   { transform: translateY(0);     opacity: 1; }
+}
+
+/* Variante verde (éxito) */
+.notificacion-verde {
+    background-color: #f0fdf4;
+    color: #166534;
+    border: 1px solid #86efac;
+}
+
+/* Variante rojo (error o eliminación) */
+.notificacion-rojo {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+}

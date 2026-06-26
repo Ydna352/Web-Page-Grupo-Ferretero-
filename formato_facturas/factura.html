@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura - Piedras</title>
+    <link rel="stylesheet" href="../estilos.css">
+</head>
+
+<body>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PÁGINA 1
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="invoice" id="page1">
+
+        <!-- Triángulos de color -->
+        <header class="invoice-header">
+            <div class="hero-background"></div>
+            <div class="invoice-content-header">
+                <div class="logo-section">
+                    <img src="Logo_blanco_GF.PNG" alt="Logo" width="60" height="60">
+                    <div>
+                        <h2>Piedras</h2>
+                        <p class="slogan">UNA SOLUCIÓN A TUS NECESIDADES</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Datos del emisor — fondo blanco, pegado al triángulo -->
+        <div class="issuer-data">
+            <div class="issuer-data-inner">
+                <p><strong>GUADALUPE MONSERRAT MORA RAMÍREZ</strong></p>
+                <p>C. VENUSTIANO CARRANZA NTE. No. 6 SAN BARTOLOMÉ</p>
+                <p>SAN PABLO DEL MONTE TLAXCALA C.P. 90970</p>
+                <p>RFC: MORG-821212-VD2</p>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="main-content">
+
+            <!-- Datos del cliente -->
+            <section class="data-client">
+                <ul class="client-info">
+                    <li><strong>CLIENTE:</strong> CLAUDIA LIDIA OCOTERO SANCHEZ</li>
+                    <li><strong>RFC:</strong> Sin RFC en ticket</li>
+                    <li><strong>DIRECCIÓN:</strong> CALLE PINO SUAREZ 68, SAN BARTOLOMÉ, TLAXCALA</li>
+                </ul>
+                <div class="invoice-meta">
+                    <p><strong>FOLIO:</strong> 43,572</p>
+                    <p><strong>FECHA:</strong> 02 DE ABRIL DE 2026</p>
+                    <p><strong>MÉTODO PAGO:</strong> PUE</p>
+                </div>
+            </section>
+
+            <!-- Tabla de artículos (página 1) -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>CANT.</th>
+                        <th>ARTÍCULO</th>
+                        <th>P.U.</th>
+                        <th>IMP.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2.00</td>
+                        <td>TUERCA HEXAGONAL DE 5/16"</td>
+                        <td>$31.38</td>
+                        <td>$62.76</td>
+                    </tr>
+                    <tr>
+                        <td>1.00</td>
+                        <td>RONDANA PLANA DE 5/16"</td>
+                        <td>$68.97</td>
+                        <td>$68.97</td>
+                    </tr>
+                    <tr>
+                        <td>2.00</td>
+                        <td>TUERCA HEXAGONAL DE 1/4"</td>
+                        <td>$20.69</td>
+                        <td>$41.38</td>
+                    </tr>
+                    <tr>
+                        <td>20.00</td>
+                        <td>LLAVE DE ZAMAC P/ MANGUERA 100G</td>
+                        <td>$23.36</td>
+                        <td>$467.24</td>
+                    </tr>
+                    <tr>
+                        <td>40.00</td>
+                        <td>CODO 90° X 1/2" PPR (20 MM)</td>
+                        <td>$2.59</td>
+                        <td>$103.47</td>
+                    </tr>
+                    <tr>
+                        <td>1.00</td>
+                        <td>CERRADURA PHILLIPS 715 INS. DER</td>
+                        <td>$141.81</td>
+                        <td>$141.81</td>
+                    </tr>
+                    <!-- ── Agrega más filas aquí si el ticket tiene más artículos.
+                         Si la tabla desborda esta página, mueve el resto a la
+                         tabla de la PÁGINA 2 y deja los totales al final. ── -->
+                </tbody>
+            </table>
+
+            <!-- Totales y sello fiscal -->
+            <section class="totals-section">
+                <div class="fiscal-stamps">
+                    <p><strong>Folio Fiscal:</strong> 511ebe13-f313-4c6f-aee8-6bd9009eec06</p>
+                    <p class="simulacion-aviso">ESTE DOCUMENTO ES UNA REPRESENTACIÓN IMPRESA DE UN CFDI (SIMULACIÓN)</p>
+                </div>
+                <ul class="total-box">
+                    <li><span>SUBTOTAL:</span> <strong>$1,254.51</strong></li>
+                    <li><span>IVA:</span> <strong>$200.72</strong></li>
+                    <li class="grand-total"><span>TOTAL:</span> <strong>$1,455.23</strong></li>
+                </ul>
+            </section>
+
+        </div><!-- /.main-content -->
+
+        <!-- Pie de página -->
+        <footer class="invoice-footer">
+            <div class="signature">
+                <hr class="line">
+                <p>SELLO DIGITAL DEL CFDI (SIMULADO)</p>
+            </div>
+            <div class="footer-background"></div>
+        </footer>
+
+    </div><!-- /#page1 -->
+
+
+    <!-- ══════════════════════════════════════════════════════════
+         PÁGINA 2  —  solo se muestra si el ticket es muy largo.
+         Si no se necesita, elimina o comenta todo este bloque.
+    ══════════════════════════════════════════════════════════════ -->
+    <div class="invoice" id="page2" style="display:none;">
+
+        <!-- Encabezado compacto para páginas adicionales -->
+        <header class="invoice-header page-header-mini">
+            <div class="hero-background"></div>
+            <div class="invoice-content-header">
+                <div class="logo-section">
+                    <img src="Logo_blanco_GF.PNG" alt="Logo" width="36" height="36">
+                    <div>
+                        <h2>Piedras</h2>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <p class="page-note">Continuación — Folio: 43,572 &nbsp;|&nbsp; Página 2</p>
+
+        <!-- Contenido de la página 2 -->
+        <div class="main-content">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>CANT.</th>
+                        <th>ARTÍCULO</th>
+                        <th>P.U.</th>
+                        <th>IMP.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Mueve aquí las filas que no caben en la página 1 -->
+                    <tr>
+                        <td colspan="4" style="text-align:center;color:#aaa;font-style:italic;">
+                            Artículos adicionales del ticket...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <!-- Pie de página -->
+        <footer class="invoice-footer">
+            <div class="signature">
+                <hr class="line">
+                <p>SELLO DIGITAL DEL CFDI (SIMULADO)</p>
+            </div>
+            <div class="footer-background"></div>
+        </footer>
+
+    </div><!-- /#page2 -->
+
+
+    <script>
+        /**
+         * Auto multi-página:
+         * Si la tabla de la página 1 desborda la hoja (27.94cm ≈ 1057px),
+         * muestra automáticamente la página 2.
+         *
+         * Para forzar la página 2, coloca style="display:none;" en page2
+         * y cambia el umbral a 0, o simplemente quita el display:none
+         * manualmente del div#page2.
+         */
+        (function () {
+            const PAGE_HEIGHT_PX = 1057; // 27.94 cm a 96 dpi (aprox)
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+
+            if (!page1 || !page2) return;
+
+            // Esperar a que los estilos se apliquen
+            requestAnimationFrame(function () {
+                if (page1.scrollHeight > PAGE_HEIGHT_PX) {
+                    page2.style.display = 'flex';
+                }
+            });
+        })();
+    </script>
+
+</body>
+
+</html>

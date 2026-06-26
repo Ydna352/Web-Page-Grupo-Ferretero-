@@ -1,0 +1,14 @@
+# Ignorar dependencias de PHP (Composer)
+vendor/
+
+# Ignorar archivos locales temporales y logs
+logs/*.log
+.claude/
+
+# Ignorar archivos subidos por los usuarios (facturas y constancias fiscales)
+constancia_fiscal/*
+facturas_pdf/*
+uploads/*
+
+# Ignorar configuración de credenciales de Base de Datos
+PHP/config.php

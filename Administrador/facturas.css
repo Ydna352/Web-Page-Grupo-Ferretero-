@@ -1,0 +1,76 @@
+/* ============================================================
+   facturas.css — Estilos específicos de la página de Facturas
+   ============================================================
+   Complementa styles.css e inventory.css.
+   Agrega: stats de 2 columnas, badges CFDI, valor total grande.
+   ============================================================ */
+
+/* Stats en 2 columnas (en lugar de 3) */
+.stats-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 700px; /* No se estiran demasiado en pantallas anchas */
+}
+
+@media (max-width: 600px) {
+    .stats-grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Valor numérico más pequeño para importes largos */
+.stat-valor-md {
+    font-size: 1.5rem !important;
+}
+
+/* Celda del total de la factura */
+.celda-total {
+    font-weight: 700 !important;
+    font-size: 0.95rem;
+}
+
+/* ============================================================
+   BADGES DE USO CFDI
+   Etiquetas de colores para cada tipo de CFDI del SAT
+   ============================================================ */
+.badge-cfdi {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Clasificación por tipo de CFDI */
+.badge-G01 { background: #e8f5e9; color: #2e7d32; }   /* Adquisición bienes */
+.badge-G02 { background: #e3f2fd; color: #1565c0; }   /* Devoluciones */
+.badge-G03 { background: #f3e5f5; color: #7b1fa2; }   /* Gastos generales */
+.badge-I01 { background: #fff3e0; color: #e65100; }   /* Construcciones */
+.badge-I02 { background: #fce4ec; color: #c62828; }   /* Mobiliario */
+.badge-D04 { background: #e0f7fa; color: #00695c; }   /* Donativos */
+.badge-D07 { background: #f9fbe7; color: #558b2f; }   /* Primas seguros */
+.badge-D08 { background: #ede7f6; color: #4527a0; }   /* Transportación */
+.badge-P01 { background: var(--color-muted-fondo); color: var(--color-muted); } /* Por definir */
+
+
+/* ============================================================
+   GRÁFICA DE FACTURACIÓN (Chart.js)
+   ============================================================ */
+
+/* Margin-bottom extra para separar la gráfica de la tabla */
+.grafica-card {
+    margin-bottom: 28px;
+}
+
+/* Contenedor del <canvas> con altura fija */
+.grafica-contenedor {
+    padding: 20px 24px 24px;
+    position: relative;
+    height: 320px;   /* Equivale a height={300} en ResponsiveContainer de recharts */
+    width: 100%;
+}
+
+/* El canvas ocupa todo el contenedor */
+.grafica-contenedor canvas {
+    max-width: 100%;
+}
