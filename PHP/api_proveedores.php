@@ -3,7 +3,7 @@
  * api_proveedores.php — API REST para el módulo de Proveedores
  * Esquema real:
  *   gf_proveedores: id, nombre, correo_electronico, telefono, persona_de_contacto
- */
+ */ 
 
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
